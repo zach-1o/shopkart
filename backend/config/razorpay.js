@@ -1,0 +1,18 @@
+import Razorpay from "razorpay";
+import dotenv from "dotenv";
+dotenv.config();
+
+let razorpayInstance = null;
+
+try {
+  if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
+    razorpayInstance = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_KEY_SECRET
+    });
+  }
+} catch (err) {
+  console.warn("Razorpay instance initialization warning:", err.message);
+}
+
+export default razorpayInstance;
