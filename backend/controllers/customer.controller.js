@@ -44,9 +44,12 @@ export const registerCustomer = async (req, res) => {
       phone: phone.trim()
     });
 
+    const token = generateToken(res, newCustomer._id);
+
     return res.status(201).json({
       success: true,
       message: "Customer registered successfully",
+      token,
       customer: {
         _id: newCustomer._id,
         fullName: newCustomer.fullName,
@@ -92,11 +95,12 @@ export const loginCustomer = async (req, res) => {
     }
 
     // Generate JWT and store in HttpOnly cookie
-    generateToken(res, customer._id);
+    const token = generateToken(res, customer._id);
 
     return res.status(200).json({
       success: true,
       message: "Login successful",
+      token,
       customer: {
         _id: customer._id,
         fullName: customer.fullName,
@@ -135,10 +139,11 @@ export const getMyProfile = async (req, res) => {
 // Task 4: Logout
 export const logoutCustomer = async (req, res) => {
   try {
+    const isProduction = process.env.NODE_ENV === "production";
     res.clearCookie("token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax"
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax"
     });
 
     return res.status(200).json({

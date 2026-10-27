@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL !== undefined
+  ? import.meta.env.VITE_API_BASE_URL
+  : (import.meta.env.PROD ? "" : "http://localhost:5000");
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -8,6 +10,15 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json"
   }
+});
+
+// Interceptor for cross-domain / bearer token resilience
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("shopkart_token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 // Authentication APIs (Lab 01 & Lab 02)

@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: shopkart-fullstack
+    runtime: node
+    plan: free
+    buildCommand: npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 5000
+      - key: RAZORPAY_KEY_ID
+        value: rzp_test_shopkart123
+      - key: RAZORPAY_KEY_SECRET
+        value: shopkart_secret_key_456789

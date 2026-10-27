@@ -26,6 +26,9 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const res = await loginCustomer({ email, password });
+    if (res.token) {
+      localStorage.setItem("shopkart_token", res.token);
+    }
     if (res.success && res.customer) {
       setCustomer(res.customer);
     } else {
@@ -36,7 +39,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (formData) => {
-    return await registerCustomer(formData);
+    const res = await registerCustomer(formData);
+    if (res.token) {
+      localStorage.setItem("shopkart_token", res.token);
+    }
+    return res;
   };
 
   const logout = async () => {
@@ -45,6 +52,7 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       console.warn("Logout error:", err);
     } finally {
+      localStorage.removeItem("shopkart_token");
       setCustomer(null);
     }
   };

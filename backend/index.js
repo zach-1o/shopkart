@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
 // Import routes
@@ -15,13 +17,19 @@ import Product from "./models/product.model.js";
 
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middlewares
+// CORS configuration supporting single-domain or multi-domain deployments
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like same-origin static requests, Postman) or any origin in production
+      callback(null, true);
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
   })
@@ -40,6 +48,28 @@ app.use("/products", productRoutes);
 app.use("/wishlist", wishlistRoutes);
 app.use("/cart", cartRoutes);
 app.use("/orders", orderRoutes);
+
+// Serve static frontend files in production (All-in-one deployment support)
+const frontendDistPath = path.resolve(__dirname, "../frontend/dist");
+app.use(express.static(frontendDistPath));
+
+app.get("*", (req, res, next) => {
+  if (
+    req.path.startsWith("/customers") ||
+    req.path.startsWith("/products") ||
+    req.path.startsWith("/wishlist") ||
+    req.path.startsWith("/cart") ||
+    req.path.startsWith("/orders") ||
+    req.path.startsWith("/health")
+  ) {
+    return next();
+  }
+  res.sendFile(path.join(frontendDistPath, "index.html"), (err) => {
+    if (err) {
+      next();
+    }
+  });
+});
 
 // Global Error Handler
 app.use((err, req, res, next) => {
