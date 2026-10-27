@@ -4,6 +4,22 @@ A production-grade, end-to-end MERN stack e-commerce web application built stric
 
 ---
 
+## 🎬 Project Demo & Video Walkthrough
+
+Watch the complete live walkthrough showcasing what ShopKart is and how to use it:
+
+👉 **[Click Here to Watch the ShopKart Demo Video (Google Drive)](https://drive.google.com/file/d/1OAE6L0UAPnqTZfmwzh9s0MGLrIiTWVxf/view?usp=sharing)**
+
+### 📺 What's Covered in the Demo:
+1. **User Authentication**: Registering a new customer account, secure login, profile inspection, and session persistence.
+2. **Catalog Discovery**: Browsing products, real-time title search, category filtering, and single product views.
+3. **Wishlist Interactions**: One-click add/toggle wishlist with dynamic visual micro-states.
+4. **Cart & Quantity Management**: Adding items, adjusting quantities with stock limits, and live price/item recalculation.
+5. **Checkout & Payment Flow**: Shipping address validation, test Razorpay payment gateway integration, and signature verification.
+6. **Order History**: Viewing placed orders with immutable historical snapshots and status badges.
+
+---
+
 ## 🌟 Overview & Key Features
 
 ShopKart covers the entire shopping journey from user authentication to product discovery, persistent wishlist, cart management, checkout with Razorpay test payment, and historical order management.
