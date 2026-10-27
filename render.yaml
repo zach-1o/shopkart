@@ -16,3 +16,5 @@ services:
         value: rzp_test_shopkart123
       - key: RAZORPAY_KEY_SECRET
         value: shopkart_secret_key_456789
+      - key: MONGO_URI
+        sync: false
